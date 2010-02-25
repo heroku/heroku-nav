@@ -55,5 +55,13 @@ module Heroku
         @headers['Content-Length'] = @body[0].size.to_s
       end
     end
+
+    class Footer < Base
+      def insert!
+        @body[0].gsub!(/(<head>)/i, "\\1<style type=\"text/css\">#{@css}</style>") if @css
+        @body[0].gsub!(/(<\/body>)/i, "#{@html}\\1") if @html
+        @headers['Content-Length'] = @body[0].size.to_s
+      end
+    end
   end
 end

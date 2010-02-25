@@ -6,6 +6,12 @@ class Heroku::Nav::Header
   end
 end
 
+class Heroku::Nav::Footer
+  def fetch
+    ['<!-- footer -->', '#footer']
+  end
+end
+
 describe Heroku::Nav::Header do
   def app
     make_app { use Heroku::Nav::Header }
@@ -34,5 +40,21 @@ describe Heroku::Nav::Header do
   it "adds the css right after the head" do
     get '/', :body => '<html><head>... <body>'
     last_response.body.should.equal '<html><head><style type="text/css">#header</style>... <body><!-- header -->'
+  end
+end
+
+describe Heroku::Nav::Footer do
+  def app
+    make_app { use Heroku::Nav::Footer }
+  end
+
+  it "adds the html right before the body closing" do
+    get '/', :body => '<body>hi</body></html>'
+    last_response.body.should.equal '<body>hi<!-- footer --></body></html>'
+  end
+
+  it "adds the css right after the head" do
+    get '/', :body => '<html><head>... <body>'
+    last_response.body.should.equal '<html><head><style type="text/css">#footer</style>... <body>'
   end
 end
