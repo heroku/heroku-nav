@@ -47,6 +47,22 @@ describe Heroku::Nav::Header do
     last_response.body.should.not =~ /<!-- header -->/
   end
 
+  describe "defining response status" do
+    def app
+      make_app { use Heroku::Nav::Header, :status => [404] }
+    end
+
+    it "respects the :status option" do
+      get '/404', :body => '<html><body>hi'
+      last_response.body.should =~ /<!-- header -->/
+    end
+
+    it "allows overriding the default status" do
+      get '/', :body => '<html><body>hi'
+      last_response.body.should.not =~ /<!-- header -->/
+    end
+  end
+
   describe "excluding paths" do
     def app
       make_app { use Heroku::Nav::Header, :except => [/x/, /alt/] }
@@ -54,7 +70,7 @@ describe Heroku::Nav::Header do
 
     it "respects the :except option" do
       get '/alternate', :body => '<html><body>hi'
-      last_response.body.should.equal '<html><body>hi'
+      last_response.body.should.not =~ /<!-- header -->/
     end
   end
 end

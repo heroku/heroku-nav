@@ -6,9 +6,9 @@ module Heroku
     class Base
       def initialize(app, options={})
         @app     = app
-        if @except = options[:except]
-          @except = [@except] unless @except.is_a?(Array)
-        end
+        @options = options
+        @options[:except] = [@options[:except]] unless @options[:except].is_a?(Array)
+        @options[:status] ||= [200]
         refresh
       end
 
@@ -19,12 +19,12 @@ module Heroku
       end
 
       def can_insert?(env)
-        return unless @status == 200
+        return unless @options[:status].include?(@status)
         return unless @headers['Content-Type'] =~ /text\/html/ || (@body.respond_to?(:headers) && @body.headers['Content-Type'] =~ /text\/html/)
         @body_accessor = [:first, :body].detect { |m| @body.respond_to?(m) }
         return unless @body_accessor
         return unless @body.send(@body_accessor) =~ /<body.*?>/i
-        return if @except && @except.any? { |route| env['PATH_INFO'] =~ route }
+        return if @options[:except].any? { |route| env['PATH_INFO'] =~ route }
         true
       end
 
