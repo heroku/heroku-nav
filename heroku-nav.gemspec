@@ -5,15 +5,17 @@
 
 Gem::Specification.new do |s|
   s.name = %q{heroku-nav}
-  s.version = "0.1.0"
+  s.version = "0.1.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Todd Matthews", "Pedro Belo"]
-  s.date = %q{2010-02-24}
+  s.date = %q{2010-02-25}
   s.description = %q{}
   s.email = %q{pedro@heroku.com}
   s.files = [
-    "Rakefile",
+    ".gitignore",
+     "Rakefile",
+     "heroku-nav.gemspec",
      "lib/heroku/nav.rb",
      "spec/api_spec.rb",
      "spec/base.rb",
@@ -22,7 +24,7 @@ Gem::Specification.new do |s|
   s.homepage = %q{http://heroku.com}
   s.rdoc_options = ["--charset=UTF-8"]
   s.require_paths = ["lib"]
-  s.rubygems_version = %q{1.3.5}
+  s.rubygems_version = %q{1.3.6}
   s.summary = %q{}
   s.test_files = [
     "spec/api_spec.rb",
