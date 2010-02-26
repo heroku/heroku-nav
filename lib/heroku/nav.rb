@@ -19,6 +19,7 @@ module Heroku
       end
 
       def can_insert?(env)
+        return unless @status == 200
         return unless @headers['Content-Type'] =~ /text\/html/ || (@body.respond_to?(:headers) && @body.headers['Content-Type'] =~ /text\/html/)
         @body_accessor = [:first, :body].detect { |m| @body.respond_to?(m) }
         return unless @body_accessor

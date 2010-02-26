@@ -42,6 +42,11 @@ describe Heroku::Nav::Header do
     last_response.body.should.equal '<html><head><style type="text/css">#header</style>... <body><!-- header -->'
   end
 
+  it "doesn't add for non 200 responses" do
+    get '/404', :body => '<html><body>hi'
+    last_response.body.should.not =~ /<!-- header -->/
+  end
+
   describe "excluding paths" do
     def app
       make_app { use Heroku::Nav::Header, :except => [/x/, /alt/] }
