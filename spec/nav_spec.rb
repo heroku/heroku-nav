@@ -41,6 +41,17 @@ describe Heroku::Nav::Header do
     get '/', :body => '<html><head>... <body>'
     last_response.body.should.equal '<html><head><style type="text/css">#header</style>... <body><!-- header -->'
   end
+
+  describe "excluding paths" do
+    def app
+      make_app { use Heroku::Nav::Header, :except => [/x/, /alt/] }
+    end
+
+    it "respects the :except option" do
+      get '/alternate', :body => '<html><body>hi'
+      last_response.body.should.equal '<html><body>hi'
+    end
+  end
 end
 
 describe Heroku::Nav::Footer do
