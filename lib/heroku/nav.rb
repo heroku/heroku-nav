@@ -16,9 +16,10 @@ module Heroku
       end
 
       def can_insert?
-        return unless @headers['Content-Type'] == 'text/html'
-        return unless @body.respond_to?(:[])
-        return unless @body[0] =~ /<body.*?>/i
+        return unless @headers['Content-Type'] =~ /text\/html/ || (@body.respond_to?(:headers) && @body.headers['Content-Type'] =~ /text\/html/)
+        @body_accessor = [:first, :body].detect { |m| @body.respond_to?(m) }
+        return unless @body_accessor
+        return unless @body.send(@body_accessor) =~ /<body.*?>/i
         true
       end
 
@@ -50,17 +51,17 @@ module Heroku
 
     class Header < Base
       def insert!
-        @body[0].gsub!(/(<head>)/i, "\\1<style type=\"text/css\">#{@css}</style>") if @css
-        @body[0].gsub!(/(<body.*?>\s*(<div .*?class=["'].*?container.*?["'].*?>)?)/i, "\\1#{@html}") if @html
-        @headers['Content-Length'] = @body[0].size.to_s
+        @body.send(@body_accessor).gsub!(/(<head>)/i, "\\1<style type=\"text/css\">#{@css}</style>") if @css
+        @body.send(@body_accessor).gsub!(/(<body.*?>\s*(<div .*?class=["'].*?container.*?["'].*?>)?)/i, "\\1#{@html}") if @html
+        @headers['Content-Length'] = @body.send(@body_accessor).size.to_s
       end
     end
 
     class Footer < Base
       def insert!
-        @body[0].gsub!(/(<head>)/i, "\\1<style type=\"text/css\">#{@css}</style>") if @css
-        @body[0].gsub!(/(<\/body>)/i, "#{@html}\\1") if @html
-        @headers['Content-Length'] = @body[0].size.to_s
+        @body.send(@body_accessor).gsub!(/(<head>)/i, "\\1<style type=\"text/css\">#{@css}</style>") if @css
+        @body.send(@body_accessor).gsub!(/(<\/body>)/i, "#{@html}\\1") if @html
+        @headers['Content-Length'] = @body.send(@body_accessor).size.to_s
       end
     end
   end
