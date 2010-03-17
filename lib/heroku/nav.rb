@@ -46,17 +46,17 @@ module Heroku
       end
 
       def resource_url
-        [api_url, resource].join
+        [api_url, '/', resource].join
       end
 
       def api_url
-        ENV['API_URL'] || "http://nav.heroku.com/"
+        ENV['API_URL'] || "http://nav.heroku.com"
       end
     end
 
     class Header < Base
       def insert!
-        @body.send(@body_accessor).gsub!(/(<head>)/i, "\\1<style type=\"text/css\">#{@css}</style>") if @css
+        @body.send(@body_accessor).gsub!(/(<head>)/i, "\\1<link href='#{api_url}/header.css' media='all' rel='stylesheet' type='text/css' />") if @css
         @body.send(@body_accessor).gsub!(/(<body.*?>\s*(<div .*?class=["'].*?container.*?["'].*?>)?)/i, "\\1#{@html}") if @html
         @headers['Content-Length'] = @body.send(@body_accessor).size.to_s
       end
@@ -64,7 +64,7 @@ module Heroku
 
     class Footer < Base
       def insert!
-        @body.send(@body_accessor).gsub!(/(<head>)/i, "\\1<style type=\"text/css\">#{@css}</style>") if @css
+        @body.send(@body_accessor).gsub!(/(<head>)/i, "\\1<link href='#{api_url}/footer.css' media='all' rel='stylesheet' type='text/css' />") if @css
         @body.send(@body_accessor).gsub!(/(<\/body>)/i, "#{@html}\\1") if @html
         @headers['Content-Length'] = @body.send(@body_accessor).size.to_s
       end
