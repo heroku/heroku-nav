@@ -40,20 +40,20 @@ Gem::Specification.new do |s|
       s.add_development_dependency(%q<baconmocha>, [">= 0"])
       s.add_development_dependency(%q<sinatra>, [">= 0"])
       s.add_development_dependency(%q<rack-test>, [">= 0"])
-      s.add_runtime_dependency(%q<rest-client>, ["~> 1.2.0"])
+      s.add_runtime_dependency(%q<rest-client>, [">= 1.0"])
       s.add_runtime_dependency(%q<json>, [">= 0"])
     else
       s.add_dependency(%q<baconmocha>, [">= 0"])
       s.add_dependency(%q<sinatra>, [">= 0"])
       s.add_dependency(%q<rack-test>, [">= 0"])
-      s.add_dependency(%q<rest-client>, ["~> 1.2.0"])
+      s.add_dependency(%q<rest-client>, [">= 1.0"])
       s.add_dependency(%q<json>, [">= 0"])
     end
   else
     s.add_dependency(%q<baconmocha>, [">= 0"])
     s.add_dependency(%q<sinatra>, [">= 0"])
     s.add_dependency(%q<rack-test>, [">= 0"])
-    s.add_dependency(%q<rest-client>, ["~> 1.2.0"])
+    s.add_dependency(%q<rest-client>, [">= 1.0"])
     s.add_dependency(%q<json>, [">= 0"])
   end
 end

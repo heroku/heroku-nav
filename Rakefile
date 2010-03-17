@@ -18,10 +18,10 @@ begin
     gemspec.add_development_dependency(%q<baconmocha>, [">= 0"])
     gemspec.add_development_dependency(%q<sinatra>, [">= 0"])
     gemspec.add_development_dependency(%q<rack-test>, [">= 0"])
-    gemspec.add_dependency(%q<rest-client>, ["~> 1.2.0"])
+    gemspec.add_dependency(%q<rest-client>, [">= 1.0"])
     gemspec.add_dependency(%q<json>, [">= 0"])
 
-    gemspec.version = '0.1.4'
+    gemspec.version = '0.1.5'
   end
 rescue LoadError
   puts "Jeweler not available. Install it with: gem install jeweler"
