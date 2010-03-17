@@ -2,13 +2,13 @@ require File.dirname(__FILE__) + '/base'
 
 class Heroku::Nav::Header
   def fetch
-    ['<!-- header -->', '#header']
+    '<!-- header -->'
   end
 end
 
 class Heroku::Nav::Footer
   def fetch
-    ['<!-- footer -->', '#footer']
+    '<!-- footer -->'
   end
 end
 

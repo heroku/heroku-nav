@@ -29,13 +29,13 @@ module Heroku
       end
 
       def refresh
-        @html, @css = fetch
+        @html = fetch
       end
 
       def fetch
         raw   = RestClient.get(resource_url, :accept => :json)
         attrs = JSON.parse(raw)
-        [attrs['html'], attrs['css']]
+        attrs['html']
       rescue => e
         STDERR.puts "Failed to fetch the Heroku #{resource}: #{e.class.name} - #{e.message}"
         nil
@@ -56,16 +56,20 @@ module Heroku
 
     class Header < Base
       def insert!
-        @body.send(@body_accessor).gsub!(/(<head>)/i, "\\1<link href='#{api_url}/header.css' media='all' rel='stylesheet' type='text/css' />") if @css
-        @body.send(@body_accessor).gsub!(/(<body.*?>\s*(<div .*?class=["'].*?container.*?["'].*?>)?)/i, "\\1#{@html}") if @html
+        if @html
+          @body.send(@body_accessor).gsub!(/(<head>)/i, "\\1<link href='#{api_url}/header.css' media='all' rel='stylesheet' type='text/css' />") 
+          @body.send(@body_accessor).gsub!(/(<body.*?>\s*(<div .*?class=["'].*?container.*?["'].*?>)?)/i, "\\1#{@html}")
+        end
         @headers['Content-Length'] = @body.send(@body_accessor).size.to_s
       end
     end
 
     class Footer < Base
       def insert!
-        @body.send(@body_accessor).gsub!(/(<head>)/i, "\\1<link href='#{api_url}/footer.css' media='all' rel='stylesheet' type='text/css' />") if @css
-        @body.send(@body_accessor).gsub!(/(<\/body>)/i, "#{@html}\\1") if @html
+        if @html
+          @body.send(@body_accessor).gsub!(/(<head>)/i, "\\1<link href='#{api_url}/footer.css' media='all' rel='stylesheet' type='text/css' />") 
+          @body.send(@body_accessor).gsub!(/(<\/body>)/i, "#{@html}\\1")
+        end
         @headers['Content-Length'] = @body.send(@body_accessor).size.to_s
       end
     end
