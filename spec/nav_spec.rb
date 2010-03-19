@@ -1,18 +1,10 @@
 require File.dirname(__FILE__) + '/base'
 
-class Heroku::Nav::Header
-  def fetch
-    '<!-- header -->'
-  end
-end
-
-class Heroku::Nav::Footer
-  def fetch
-    '<!-- footer -->'
-  end
-end
-
 describe Heroku::Nav::Header do
+  before do
+    Heroku::Nav::Header.stubs(:fetch).returns('<!-- header -->')
+  end
+
   def app
     make_app { use Heroku::Nav::Header }
   end
@@ -76,6 +68,10 @@ describe Heroku::Nav::Header do
 end
 
 describe Heroku::Nav::Footer do
+  before do
+    Heroku::Nav::Footer.stubs(:fetch).returns('<!-- footer -->')
+  end
+
   def app
     make_app { use Heroku::Nav::Footer }
   end

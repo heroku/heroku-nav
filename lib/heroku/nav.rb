@@ -30,37 +30,39 @@ module Heroku
       end
 
       def refresh
-        @html = fetch
+        @html = self.class.fetch
       end
 
-      def fetch
-        Timeout.timeout(4) do
-          raw   = RestClient.get(resource_url, :accept => :json)
-          attrs = JSON.parse(raw)
-          return attrs['html']
+      class << self
+        def fetch
+          Timeout.timeout(4) do
+            raw   = RestClient.get(resource_url, :accept => :json)
+            attrs = JSON.parse(raw)
+            return attrs['html']
+          end
+        rescue => e
+          STDERR.puts "Failed to fetch the Heroku #{resource}: #{e.class.name} - #{e.message}"
+          nil
         end
-      rescue => e
-        STDERR.puts "Failed to fetch the Heroku #{resource}: #{e.class.name} - #{e.message}"
-        nil
-      end
 
-      def resource
-        self.class.name.split('::').last.downcase
-      end
+        def resource
+          name.split('::').last.downcase
+        end
 
-      def resource_url
-        [api_url, '/', resource].join
-      end
+        def resource_url
+          [api_url, '/', resource].join
+        end
 
-      def api_url
-        ENV['API_URL'] || "http://nav.heroku.com"
+        def api_url
+          ENV['API_URL'] || "http://nav.heroku.com"
+        end
       end
     end
 
     class Header < Base
       def insert!
         if @html
-          @body.send(@body_accessor).gsub!(/(<head>)/i, "\\1<link href='#{api_url}/header.css' media='all' rel='stylesheet' type='text/css' />") 
+          @body.send(@body_accessor).gsub!(/(<head>)/i, "\\1<link href='#{self.class.api_url}/header.css' media='all' rel='stylesheet' type='text/css' />") 
           @body.send(@body_accessor).gsub!(/(<body.*?>\s*(<div .*?class=["'].*?container.*?["'].*?>)?)/i, "\\1#{@html}")
         end
         @headers['Content-Length'] = @body.send(@body_accessor).size.to_s
@@ -70,7 +72,7 @@ module Heroku
     class Footer < Base
       def insert!
         if @html
-          @body.send(@body_accessor).gsub!(/(<head>)/i, "\\1<link href='#{api_url}/footer.css' media='all' rel='stylesheet' type='text/css' />") 
+          @body.send(@body_accessor).gsub!(/(<head>)/i, "\\1<link href='#{self.class.api_url}/footer.css' media='all' rel='stylesheet' type='text/css' />") 
           @body.send(@body_accessor).gsub!(/(<\/body>)/i, "#{@html}\\1")
         end
         @headers['Content-Length'] = @body.send(@body_accessor).size.to_s
