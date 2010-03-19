@@ -1,5 +1,6 @@
 require 'rest_client'
 require 'json'
+require 'timeout'
 
 module Heroku
   module Nav
@@ -33,9 +34,11 @@ module Heroku
       end
 
       def fetch
-        raw   = RestClient.get(resource_url, :accept => :json)
-        attrs = JSON.parse(raw)
-        attrs['html']
+        Timeout.timeout(4) do
+          raw   = RestClient.get(resource_url, :accept => :json)
+          attrs = JSON.parse(raw)
+          return attrs['html']
+        end
       rescue => e
         STDERR.puts "Failed to fetch the Heroku #{resource}: #{e.class.name} - #{e.message}"
         nil
