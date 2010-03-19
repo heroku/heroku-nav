@@ -56,6 +56,11 @@ module Heroku
         def api_url
           ENV['API_URL'] || "http://nav.heroku.com"
         end
+
+        # for non-rack use
+        def html
+          @@body ||= fetch
+        end
       end
     end
 
