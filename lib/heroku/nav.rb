@@ -69,8 +69,8 @@ module Heroku
         if @html
           @body.send(@body_accessor).gsub!(/(<head>)/i, "\\1<link href='#{self.class.api_url}/header.css' media='all' rel='stylesheet' type='text/css' />") 
           @body.send(@body_accessor).gsub!(/(<body.*?>\s*(<div .*?class=["'].*?container.*?["'].*?>)?)/i, "\\1#{@html}")
+          @headers['Content-Length'] = @body.send(@body_accessor).size.to_s
         end
-        @headers['Content-Length'] = @body.send(@body_accessor).size.to_s
       end
     end
 
@@ -79,8 +79,8 @@ module Heroku
         if @html
           @body.send(@body_accessor).gsub!(/(<head>)/i, "\\1<link href='#{self.class.api_url}/footer.css' media='all' rel='stylesheet' type='text/css' />") 
           @body.send(@body_accessor).gsub!(/(<\/body>)/i, "#{@html}\\1")
+          @headers['Content-Length'] = @body.send(@body_accessor).size.to_s
         end
-        @headers['Content-Length'] = @body.send(@body_accessor).size.to_s
       end
     end
   end
