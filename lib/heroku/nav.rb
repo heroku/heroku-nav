@@ -54,7 +54,7 @@ module Heroku
         end
 
         def api_url
-          ENV['API_URL'] || "http://nav.heroku.com"
+          ENV['API_URL'] || ENV['HEROKU_NAV_URL'] || "http://nav.heroku.com"
         end
 
         # for non-rack use
