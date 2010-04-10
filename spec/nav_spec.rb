@@ -86,3 +86,19 @@ describe Heroku::Nav::Footer do
     last_response.body.should.equal "<html><head><link href='http://nav.heroku.com/footer.css' media='all' rel='stylesheet' type='text/css' />... <body>"
   end
 end
+
+describe Heroku::Nav::Internal do
+  before do
+    Heroku::Nav::Internal.stubs(:fetch).returns('<!-- head -->')
+  end
+
+  def app
+    make_app { use Heroku::Nav::Internal }
+  end
+
+  it "adds the html right after the head" do
+    get '/', :body => '<head><title /></head><body>'
+    last_response.body.should.equal '<head><!-- head --><title /></head><body>'
+  end
+
+end

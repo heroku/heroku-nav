@@ -83,5 +83,17 @@ module Heroku
         end
       end
     end
+
+    class Internal < Base
+      def self.resource
+        "internal.json"
+      end
+      def insert!
+        if @html
+          @body.send(@body_accessor).gsub!(/(<head>)/i, "\\1#{@html}")
+          @headers['Content-Length'] = @body.send(@body_accessor).size.to_s
+        end
+      end
+    end
   end
 end
