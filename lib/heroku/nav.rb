@@ -90,8 +90,11 @@ module Heroku
       def insert!
         if @nav['head']
           @body.send(@body_accessor).gsub!(/(<head>)/i, "\\1#{@nav['head']}")
-          @headers['Content-Length'] = @body.send(@body_accessor).size.to_s
         end
+        if @nav['body'] && @options[:development]
+          @body.send(@body_accessor).gsub!(/(<body.*?>)/i, "\\1#{@nav['body']}")
+        end
+        @headers['Content-Length'] = @body.send(@body_accessor).size.to_s
       end
     end
   end

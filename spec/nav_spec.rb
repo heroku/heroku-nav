@@ -89,16 +89,32 @@ end
 
 describe Heroku::Nav::Internal do
   before do
-    Heroku::Nav::Internal.stubs(:fetch).returns('head' => '<!-- head -->')
+    Heroku::Nav::Internal.stubs(:fetch).returns('head' => '<!-- head -->', 'body' => '<!-- body -->')
   end
 
   def app
     make_app { use Heroku::Nav::Internal }
   end
 
-  it "adds the html right after the head" do
+  it "adds the head" do
     get '/', :body => '<head><title /></head><body>'
     last_response.body.should.equal '<head><!-- head --><title /></head><body>'
+  end
+
+  it "doesn't add the body" do
+    get '/', :body => '<html><body>hi'
+    last_response.body.should.equal '<html><body>hi'
+  end
+
+  describe "development mode" do
+    def app
+      make_app { use Heroku::Nav::Internal, :development => true }
+    end
+
+    it "adds the body" do
+      get '/', :body => '<html><body>hi'
+      last_response.body.should.equal '<html><body><!-- body -->hi'
+    end
   end
 
 end
