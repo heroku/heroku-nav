@@ -2,7 +2,7 @@ require File.dirname(__FILE__) + '/base'
 
 describe "Api" do
   before do
-    RestClient.stubs(:get).returns({ :html => '<!-- header -->' }.to_json)
+    RestClient.stubs(:get).returns({ 'html' => '<!-- header -->' }.to_json)
   end
 
   it "has a resource based on the class name" do
@@ -20,6 +20,6 @@ describe "Api" do
   end
 
   it "parses the JSON response, returning the html and css" do
-    Heroku::Nav::Header.fetch.should == '<!-- header -->'
+    Heroku::Nav::Header.fetch.should == { 'html' => '<!-- header -->' }
   end
 end

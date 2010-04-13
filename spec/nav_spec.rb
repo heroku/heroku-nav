@@ -2,7 +2,7 @@ require File.dirname(__FILE__) + '/base'
 
 describe Heroku::Nav::Header do
   before do
-    Heroku::Nav::Header.stubs(:fetch).returns('<!-- header -->')
+    Heroku::Nav::Header.stubs(:fetch).returns('html' => '<!-- header -->')
   end
 
   def app
@@ -69,7 +69,7 @@ end
 
 describe Heroku::Nav::Footer do
   before do
-    Heroku::Nav::Footer.stubs(:fetch).returns('<!-- footer -->')
+    Heroku::Nav::Footer.stubs(:fetch).returns('html' => '<!-- footer -->')
   end
 
   def app
@@ -89,7 +89,7 @@ end
 
 describe Heroku::Nav::Internal do
   before do
-    Heroku::Nav::Internal.stubs(:fetch).returns('<!-- head -->')
+    Heroku::Nav::Internal.stubs(:fetch).returns('head' => '<!-- head -->')
   end
 
   def app

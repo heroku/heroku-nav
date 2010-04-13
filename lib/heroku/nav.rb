@@ -30,15 +30,14 @@ module Heroku
       end
 
       def refresh
-        @html = self.class.fetch
+        @nav = self.class.fetch
       end
 
       class << self
         def fetch
           Timeout.timeout(4) do
-            raw   = RestClient.get(resource_url, :accept => :json)
-            attrs = JSON.parse(raw)
-            return attrs['html']
+            raw = RestClient.get(resource_url, :accept => :json)
+            return JSON.parse(raw)
           end
         rescue => e
           STDERR.puts "Failed to fetch the Heroku #{resource}: #{e.class.name} - #{e.message}"
@@ -59,16 +58,16 @@ module Heroku
 
         # for non-rack use
         def html
-          @@body ||= fetch
+          @@body ||= fetch['html']
         end
       end
     end
 
     class Header < Base
       def insert!
-        if @html
+        if @nav['html']
           @body.send(@body_accessor).gsub!(/(<head>)/i, "\\1<link href='#{self.class.api_url}/header.css' media='all' rel='stylesheet' type='text/css' />") 
-          @body.send(@body_accessor).gsub!(/(<body.*?>\s*(<div .*?class=["'].*?container.*?["'].*?>)?)/i, "\\1#{@html}")
+          @body.send(@body_accessor).gsub!(/(<body.*?>\s*(<div .*?class=["'].*?container.*?["'].*?>)?)/i, "\\1#{@nav['html']}")
           @headers['Content-Length'] = @body.send(@body_accessor).size.to_s
         end
       end
@@ -76,9 +75,9 @@ module Heroku
 
     class Footer < Base
       def insert!
-        if @html
+        if @nav['html']
           @body.send(@body_accessor).gsub!(/(<head>)/i, "\\1<link href='#{self.class.api_url}/footer.css' media='all' rel='stylesheet' type='text/css' />") 
-          @body.send(@body_accessor).gsub!(/(<\/body>)/i, "#{@html}\\1")
+          @body.send(@body_accessor).gsub!(/(<\/body>)/i, "#{@nav['html']}\\1")
           @headers['Content-Length'] = @body.send(@body_accessor).size.to_s
         end
       end
@@ -89,8 +88,8 @@ module Heroku
         "internal.json"
       end
       def insert!
-        if @html
-          @body.send(@body_accessor).gsub!(/(<head>)/i, "\\1#{@html}")
+        if @nav['head']
+          @body.send(@body_accessor).gsub!(/(<head>)/i, "\\1#{@nav['head']}")
           @headers['Content-Length'] = @body.send(@body_accessor).size.to_s
         end
       end
