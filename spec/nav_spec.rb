@@ -98,12 +98,12 @@ describe Heroku::Nav::Internal do
 
   it "adds the head" do
     get '/', :body => '<head><title /></head><body>'
-    last_response.body.should.equal '<head><!-- head --><title /></head><body><!-- body -->'
+    last_response.body.should.equal '<head><!-- head --><title /></head><body>'
   end
 
   it "adds the body" do
-    get '/', :body => '<html><body>hi'
-    last_response.body.should.equal '<html><body><!-- body -->hi'
+    get '/', :body => '<html><body>hi</body>'
+    last_response.body.should.equal '<html><body>hi<!-- body --></body>'
   end
 
 end

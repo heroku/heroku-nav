@@ -92,7 +92,7 @@ module Heroku
           @body.send(@body_accessor).gsub!(/(<head>)/i, "\\1#{@nav['head']}")
         end
         if @nav['body']
-          @body.send(@body_accessor).gsub!(/(<body.*?>)/i, "\\1#{@nav['body']}")
+          @body.send(@body_accessor).gsub!(/(<\/body>)/i, "#{@nav['body']}\\1")
         end
         @headers['Content-Length'] = @body.send(@body_accessor).size.to_s
       end
