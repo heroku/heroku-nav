@@ -98,23 +98,12 @@ describe Heroku::Nav::Internal do
 
   it "adds the head" do
     get '/', :body => '<head><title /></head><body>'
-    last_response.body.should.equal '<head><!-- head --><title /></head><body>'
+    last_response.body.should.equal '<head><!-- head --><title /></head><body><!-- body -->'
   end
 
-  it "doesn't add the body" do
+  it "adds the body" do
     get '/', :body => '<html><body>hi'
-    last_response.body.should.equal '<html><body>hi'
-  end
-
-  describe "development mode" do
-    def app
-      make_app { use Heroku::Nav::Internal, :development => true }
-    end
-
-    it "adds the body" do
-      get '/', :body => '<html><body>hi'
-      last_response.body.should.equal '<html><body><!-- body -->hi'
-    end
+    last_response.body.should.equal '<html><body><!-- body -->hi'
   end
 
 end
