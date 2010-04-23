@@ -36,7 +36,7 @@ module Heroku
       class << self
         def fetch
           Timeout.timeout(4) do
-            raw = RestClient.get(resource_url, :accept => :json)
+            raw = RestClient.get(resource_url, :accept => :json).to_s
             return JSON.parse(raw)
           end
         rescue => e
