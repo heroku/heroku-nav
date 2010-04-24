@@ -11,9 +11,9 @@ begin
     gemspec.name = "heroku-nav"
     gemspec.summary = ""
     gemspec.description = ""
-    gemspec.email = "pedro@heroku.com"
     gemspec.homepage = "http://heroku.com"
     gemspec.authors = ["Todd Matthews", "Pedro Belo"]
+    gemspec.email = ["todd@heroku.com", "pedro@heroku.com"]
 
     gemspec.add_development_dependency(%q<baconmocha>, [">= 0"])
     gemspec.add_development_dependency(%q<sinatra>, [">= 0"])
