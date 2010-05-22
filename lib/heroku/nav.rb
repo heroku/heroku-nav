@@ -41,7 +41,7 @@ module Heroku
           end
         rescue => e
           STDERR.puts "Failed to fetch the Heroku #{resource}: #{e.class.name} - #{e.message}"
-          nil
+          {}
         end
 
         def resource
