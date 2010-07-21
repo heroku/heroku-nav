@@ -121,8 +121,11 @@ module Heroku
 
       def insert!
         if @nav
-          @body.send(@body_accessor).gsub!(/(<body.*?>)/i, "\\1#{@nav}")
-          @headers['Content-Length'] = @body.send(@body_accessor).size.to_s
+          match = @body.send(@body_accessor).match(/(\<body[^\>]*\>)/i)
+          if match.size > 0
+            @body.send(@body_accessor).insert(match.end(0), @nav)
+            @headers['Content-Length'] = @body.send(@body_accessor).size.to_s
+          end
         end
       end
     end

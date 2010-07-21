@@ -120,4 +120,22 @@ describe Heroku::Nav::Provider do
     get '/', :body => '<html><body>hi</body>'
     last_response.body.should.equal '<html><body><!-- heroku header -->hi</body>'
   end
+
+  describe "special chars" do
+    before do
+      Heroku::Nav::Provider.stubs(:fetch).returns('<!-- \+ nav -->')
+    end
+
+    def app
+      make_app { use Heroku::Nav::Provider }
+    end
+
+    # tricky situation, the first implementation of Heroku::Nav would inject the
+    # html by using gsub. That worked out alright until the html got a sequence of
+    # chars like "\+". those got interpreted by gsub and resulted in a bad output
+    it "doesn't freakout if the header contains special chars relevant to Ruby's gsub" do
+      get '/', :body => '<html><body>hi</body>'
+      last_response.body.should.equal '<html><body><!-- \+ nav -->hi</body>'
+    end
+  end
 end
