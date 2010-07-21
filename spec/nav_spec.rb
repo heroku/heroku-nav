@@ -105,5 +105,19 @@ describe Heroku::Nav::Internal do
     get '/', :body => '<html><body>hi</body>'
     last_response.body.should.equal '<html><body>hi<!-- body --></body>'
   end
+end
 
+describe Heroku::Nav::Provider do
+  before do
+    Heroku::Nav::Provider.stubs(:fetch).returns('<!-- heroku header -->')
+  end
+
+  def app
+    make_app { use Heroku::Nav::Provider }
+  end
+
+  it "adds the body" do
+    get '/', :body => '<html><body>hi</body>'
+    last_response.body.should.equal '<html><body><!-- heroku header -->hi</body>'
+  end
 end

@@ -97,5 +97,34 @@ module Heroku
         @headers['Content-Length'] = @body.send(@body_accessor).size.to_s
       end
     end
+
+    class Provider < Base
+      class << self
+        def fetch
+          Timeout.timeout(4) do
+            RestClient.get(resource_url).to_s
+          end
+        rescue => e
+          STDERR.puts "Failed to fetch the Heroku #{resource}: #{e.class.name} - #{e.message}"
+          {}
+        end
+
+        def resource_url
+          "#{api_url}/v1/providers/header"
+        end
+
+        # for non-rack use
+        def html
+          @@body ||= fetch
+        end
+      end
+
+      def insert!
+        if @nav
+          @body.send(@body_accessor).gsub!(/(<body.*?>)/i, "\\1#{@nav}")
+          @headers['Content-Length'] = @body.send(@body_accessor).size.to_s
+        end
+      end
+    end
   end
 end
