@@ -15,16 +15,14 @@ module Heroku
 
       def call(env)
         @status, @headers, @body = @app.call(env)
+        @body = @body.map.join("")
         insert! if can_insert?(env)
-        [@status, @headers, @body]
+        [@status, @headers, [@body]]
       end
 
       def can_insert?(env)
         return unless @options[:status].include?(@status)
-        return unless @headers['Content-Type'] =~ /text\/html/ || (@body.respond_to?(:headers) && @body.headers['Content-Type'] =~ /text\/html/)
-        @body_accessor = [:first, :body].detect { |m| @body.respond_to?(m) }
-        return unless @body_accessor
-        return unless @body.send(@body_accessor) =~ /<body.*?>/i
+        return unless @headers['Content-Type'] =~ /text\/html/
         return if @options[:except].any? { |route| env['PATH_INFO'] =~ route }
         true
       end
@@ -66,9 +64,9 @@ module Heroku
     class Header < Base
       def insert!
         if @nav['html']
-          @body.send(@body_accessor).gsub!(/(<head>)/i, "\\1<link href='#{self.class.api_url}/header.css' media='all' rel='stylesheet' type='text/css' />") 
-          @body.send(@body_accessor).gsub!(/(<body.*?>\s*(<div .*?class=["'].*?container.*?["'].*?>)?)/i, "\\1#{@nav['html']}")
-          @headers['Content-Length'] = @body.send(@body_accessor).size.to_s
+          @body.gsub!(/(<head>)/i, "\\1<link href='#{self.class.api_url}/header.css' media='all' rel='stylesheet' type='text/css' />") 
+          @body.gsub!(/(<body.*?>\s*(<div .*?class=["'].*?container.*?["'].*?>)?)/i, "\\1#{@nav['html']}")
+          @headers['Content-Length'] = @body.length.to_s
         end
       end
     end
@@ -76,9 +74,9 @@ module Heroku
     class Footer < Base
       def insert!
         if @nav['html']
-          @body.send(@body_accessor).gsub!(/(<head>)/i, "\\1<link href='#{self.class.api_url}/footer.css' media='all' rel='stylesheet' type='text/css' />") 
-          @body.send(@body_accessor).gsub!(/(<\/body>)/i, "#{@nav['html']}\\1")
-          @headers['Content-Length'] = @body.send(@body_accessor).size.to_s
+          @body.gsub!(/(<head>)/i, "\\1<link href='#{self.class.api_url}/footer.css' media='all' rel='stylesheet' type='text/css' />") 
+          @body.gsub!(/(<\/body>)/i, "#{@nav['html']}\\1")
+          @headers['Content-Length'] = @body.length.to_s
         end
       end
     end
@@ -89,12 +87,12 @@ module Heroku
       end
       def insert!
         if @nav['head']
-          @body.send(@body_accessor).gsub!(/(<head>)/i, "\\1#{@nav['head']}")
+          @body.gsub!(/(<head>)/i, "\\1#{@nav['head']}")
         end
         if @nav['body']
-          @body.send(@body_accessor).gsub!(/(<\/body>)/i, "#{@nav['body']}\\1")
+          @body.gsub!(/(<\/body>)/i, "#{@nav['body']}\\1")
         end
-        @headers['Content-Length'] = @body.send(@body_accessor).size.to_s
+        @headers['Content-Length'] = @body.length.to_s
       end
     end
 
@@ -121,10 +119,10 @@ module Heroku
 
       def insert!
         if @nav
-          match = @body.send(@body_accessor).match(/(\<body[^\>]*\>)/i)
+          match = @body.match(/(\<body[^\>]*\>)/i)
           if match.size > 0
-            @body.send(@body_accessor).insert(match.end(0), @nav)
-            @headers['Content-Length'] = @body.send(@body_accessor).size.to_s
+            @body.insert(match.end(0), @nav)
+            @headers['Content-Length'] = @body.length.to_s
           end
         end
       end
