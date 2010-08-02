@@ -12,8 +12,8 @@ begin
     gemspec.summary = ""
     gemspec.description = ""
     gemspec.homepage = "http://heroku.com"
-    gemspec.authors = ["Todd Matthews", "Pedro Belo"]
-    gemspec.email = ["todd@heroku.com", "pedro@heroku.com"]
+    gemspec.authors = ["David Dollar", "Pedro Belo", "Todd Matthews"]
+    gemspec.email = ["david@heroku.com", "pedro@heroku.com", "todd@heroku.com"]
 
     gemspec.add_development_dependency(%q<baconmocha>, [">= 0"])
     gemspec.add_development_dependency(%q<sinatra>, [">= 0"])
