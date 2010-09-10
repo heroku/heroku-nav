@@ -118,6 +118,10 @@ module Heroku
         end
       end
 
+      def can_insert?(env)
+        super && env['HTTP_COOKIE'] && env['HTTP_COOKIE'].include?('heroku-nav-data')
+      end
+
       def insert!
         if @nav
           match = @body.match(/(\<body[^\>]*\>)/i)
