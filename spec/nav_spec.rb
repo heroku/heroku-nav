@@ -121,6 +121,11 @@ describe Heroku::Nav::Provider do
     last_response.body.should.equal '<html><body><!-- heroku header -->hi</body>'
   end
 
+  it "doesn't add if there is no body tag" do
+    get '/', :body => 'no body!'
+    last_response.body.should.equal 'no body!'
+  end
+
   describe "special chars" do
     before do
       Heroku::Nav::Provider.stubs(:fetch).returns('<!-- \+ nav -->')

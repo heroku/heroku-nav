@@ -121,7 +121,7 @@ module Heroku
       def insert!
         if @nav
           match = @body.match(/(\<body[^\>]*\>)/i)
-          if match.size > 0
+          if match && match.size > 0
             @body.insert(match.end(0), @nav)
             @headers['Content-Length'] = @body.length.to_s
           end
