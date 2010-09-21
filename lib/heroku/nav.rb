@@ -16,7 +16,7 @@ module Heroku
       def call(env)
         @status, @headers, @body = @app.call(env)
         @body.extend(Enumerable)
-        @body = @body.map.join
+        @body = @body.to_a.join("")
         insert! if can_insert?(env)
         [@status, @headers, [@body]]
       end
