@@ -23,7 +23,7 @@ module Heroku
 
       def can_insert?(env)
         return unless @options[:status].include?(@status)
-        return unless @headers['Content-Type'] =~ /text\/html/
+        return unless @headers['Content-Type'] =~ /text\/html/ || @headers['content-type'] =~ /text\/html/
         return if @options[:except].any? { |route| env['PATH_INFO'] =~ route }
         true
       end
@@ -65,7 +65,7 @@ module Heroku
     class Header < Base
       def insert!
         if @nav['html']
-          @body.gsub!(/(<head>)/i, "\\1<link href='#{self.class.api_url}/header.css' media='all' rel='stylesheet' type='text/css' />") 
+          @body.gsub!(/(<head>)/i, "\\1<link href='#{self.class.api_url}/header.css' media='all' rel='stylesheet' type='text/css' />")
           @body.gsub!(/(<body.*?>\s*(<div .*?class=["'].*?container.*?["'].*?>)?)/i, "\\1#{@nav['html']}")
           @headers['Content-Length'] = @body.length.to_s
         end
@@ -75,7 +75,7 @@ module Heroku
     class Footer < Base
       def insert!
         if @nav['html']
-          @body.gsub!(/(<head>)/i, "\\1<link href='#{self.class.api_url}/footer.css' media='all' rel='stylesheet' type='text/css' />") 
+          @body.gsub!(/(<head>)/i, "\\1<link href='#{self.class.api_url}/footer.css' media='all' rel='stylesheet' type='text/css' />")
           @body.gsub!(/(<\/body>)/i, "#{@nav['html']}\\1")
           @headers['Content-Length'] = @body.length.to_s
         end
