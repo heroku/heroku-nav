@@ -21,7 +21,7 @@ begin
     gemspec.add_dependency(%q<rest-client>, [">= 1.0"])
     gemspec.add_dependency(%q<json>, [">= 0"])
 
-    gemspec.version = '0.1.18'
+    gemspec.version = '0.1.19'
   end
 rescue LoadError
   puts "Jeweler not available. Install it with: gem install jeweler"
