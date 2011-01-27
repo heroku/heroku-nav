@@ -38,7 +38,7 @@ module Heroku
             raw = RestClient.get(resource_url, :accept => :json).to_s
             return JSON.parse(raw)
           end
-        rescue Exception => e
+        rescue Timeout::Error, StandardError => e
           STDERR.puts "Failed to fetch the Heroku #{resource}: #{e.class.name} - #{e.message}"
           {}
         end
@@ -103,7 +103,7 @@ module Heroku
           Timeout.timeout(4) do
             RestClient.get(resource_url).to_s
           end
-        rescue => e
+        rescue Timeout::Error, StandardError => e
           STDERR.puts "Failed to fetch the Heroku #{resource}: #{e.class.name} - #{e.message}"
           {}
         end
