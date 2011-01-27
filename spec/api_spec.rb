@@ -15,7 +15,7 @@ describe "Api" do
   end
 
   it "doesn't raise" do
-    RestClient.stubs(:get).raises("error")
+    RestClient.stubs(:get).raises(Timeout::Error)
     lambda { Heroku::Nav::Header.fetch }.should.not.raise
   end
 
