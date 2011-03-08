@@ -12,8 +12,8 @@ begin
     gemspec.summary = ""
     gemspec.description = ""
     gemspec.homepage = "http://heroku.com"
-    gemspec.authors = ["David Dollar", "Pedro Belo", "Todd Matthews"]
-    gemspec.email = ["david@heroku.com", "pedro@heroku.com", "todd@heroku.com"]
+    gemspec.authors = ["David Dollar", "Pedro Belo", "Raul Murciano", "Todd Matthews"]
+    gemspec.email = ["david@heroku.com", "pedro@heroku.com", "raul@heroku.com", "todd@heroku.com"]
 
     gemspec.add_development_dependency(%q<baconmocha>, [">= 0"])
     gemspec.add_development_dependency(%q<sinatra>, [">= 0"])
@@ -21,7 +21,7 @@ begin
     gemspec.add_dependency(%q<rest-client>, [">= 1.0"])
     gemspec.add_dependency(%q<json>, [">= 0"])
 
-    gemspec.version = '0.1.21'
+    gemspec.version = '0.1.22'
   end
 rescue LoadError
   puts "Jeweler not available. Install it with: gem install jeweler"
