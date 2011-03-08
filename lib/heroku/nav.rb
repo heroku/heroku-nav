@@ -67,7 +67,7 @@ module Heroku
         if @nav['html']
           @body.gsub!(/(<head>)/i, "\\1<link href='#{self.class.api_url}/header.css' media='all' rel='stylesheet' type='text/css' />")
           @body.gsub!(/(<body.*?>\s*(<div .*?class=["'].*?container.*?["'].*?>)?)/i, "\\1#{@nav['html']}")
-          @headers['Content-Length'] = @body.length.to_s
+          @headers['Content-Length'] = Rack::Utils.bytesize(@body).to_s
         end
       end
     end
@@ -77,7 +77,7 @@ module Heroku
         if @nav['html']
           @body.gsub!(/(<head>)/i, "\\1<link href='#{self.class.api_url}/footer.css' media='all' rel='stylesheet' type='text/css' />")
           @body.gsub!(/(<\/body>)/i, "#{@nav['html']}\\1")
-          @headers['Content-Length'] = @body.length.to_s
+          @headers['Content-Length'] = Rack::Utils.bytesize(@body).to_s
         end
       end
     end
@@ -93,7 +93,7 @@ module Heroku
         if @nav['body']
           @body.gsub!(/(<\/body>)/i, "#{@nav['body']}\\1")
         end
-        @headers['Content-Length'] = @body.length.to_s
+        @headers['Content-Length'] = Rack::Utils.bytesize(@body).to_s
       end
     end
 
@@ -127,7 +127,7 @@ module Heroku
           match = @body.match(/(\<body[^\>]*\>)/i)
           if match && match.size > 0
             @body.insert(match.end(0), @nav)
-            @headers['Content-Length'] = @body.length.to_s
+            @headers['Content-Length'] = Rack::Utils.bytesize(@body).to_s
           end
         end
       end
