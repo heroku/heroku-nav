@@ -11,7 +11,7 @@ describe "Api" do
   end
 
   it "has a resource url based on the api url" do
-    Heroku::Nav::Header.resource_url.should == 'http://nav.heroku.com/header'
+    Heroku::Nav::Header.resource_url.should == 'https://nav.heroku.com/header'
   end
 
   it "doesn't raise" do

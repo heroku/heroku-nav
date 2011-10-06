@@ -42,7 +42,7 @@ describe Heroku::Nav::Header do
 
     it "adds the css right after the head" do
       get '/', :body => '<html><head>... <body>'
-      last_response.body.should.equal "<html><head><link href='http://nav.heroku.com/header.css' media='all' rel='stylesheet' type='text/css' />... <body><!-- header -->"
+      last_response.body.should.equal "<html><head><link href='https://nav.heroku.com/header.css' media='all' rel='stylesheet' type='text/css' />... <body><!-- header -->"
     end
 
     it "doesn't add for non 200 responses" do
@@ -95,7 +95,7 @@ describe Heroku::Nav::Footer do
 
   it "adds the css right after the head" do
     get '/', :body => '<html><head>... <body>'
-    last_response.body.should.equal "<html><head><link href='http://nav.heroku.com/footer.css' media='all' rel='stylesheet' type='text/css' />... <body>"
+    last_response.body.should.equal "<html><head><link href='https://nav.heroku.com/footer.css' media='all' rel='stylesheet' type='text/css' />... <body>"
   end
 end
 
