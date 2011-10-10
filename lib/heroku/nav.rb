@@ -34,9 +34,11 @@ module Heroku
 
       class << self
         def fetch
-          Timeout.timeout(4) do
-            raw = RestClient.get(resource_url, :accept => :json).to_s
-            return JSON.parse(raw)
+          Timeout.timeout(10) do
+            retry_upto(10, :interval => 0.5) do
+              raw = RestClient.get(resource_url, :accept => :json).to_s
+              return JSON.parse(raw)
+            end
           end
         rescue Exception => e
           STDERR.puts "Failed to fetch the Heroku #{resource}: #{e.class.name} - #{e.message}"
@@ -58,6 +60,18 @@ module Heroku
         # for non-rack use
         def html
           @@body ||= fetch['html']
+        end
+
+        def retry_upto(max_retries = 1, opts = {})
+          yield
+        rescue *(opts[:rescue] || Exception)
+          attempt = attempt ? attempt+1 : 1
+          raise if (attempt == max_retries)
+          if interval = opts[:interval]
+            secs = interval.respond_to?(:call) ? interval.call(attempt) : interval
+            sleep(secs)
+          end
+          retry
         end
       end
     end
@@ -100,8 +114,10 @@ module Heroku
     class Provider < Base
       class << self
         def fetch
-          Timeout.timeout(4) do
-            RestClient.get(resource_url).to_s
+          Timeout.timeout(10) do
+            retry_upto(10, :interval => 0.5) do
+              RestClient.get(resource_url).to_s
+            end
           end
         rescue => e
           STDERR.puts "Failed to fetch the Heroku #{resource}: #{e.class.name} - #{e.message}"
