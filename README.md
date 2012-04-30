@@ -23,6 +23,14 @@ And add the middleware like:
 
     config.middleware.use Heroku::Nav::Provider
 
+By default the header will be inserted only in responses with status 200. You can insert it in responses with different status codes with the `:status` config param:
+
+    config.middleware.use Heroku::Nav::Provider, :status => [200, 404]
+
+To don't display the header on a given request path you can use the `:except` config param:
+
+    config.middleware.use Heroku::Nav::Provider, :except => /admin/
+
 
 ## Meta #######################################################################
 
