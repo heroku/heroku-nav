@@ -40,7 +40,7 @@ module Heroku
               return JSON.parse(raw)
             end
           end
-        rescue Exception => e
+        rescue Timeout::Error, StandardError => e
           STDERR.puts "Failed to fetch the Heroku #{resource}: #{e.class.name} - #{e.message}"
           {}
         end
@@ -119,7 +119,7 @@ module Heroku
               RestClient.get(resource_url).to_s
             end
           end
-        rescue => e
+        rescue Timeout::Error, StandardError => e
           STDERR.puts "Failed to fetch the Heroku #{resource}: #{e.class.name} - #{e.message}"
           {}
         end

@@ -120,11 +120,11 @@ describe Heroku::Nav::Internal do
 end
 
 describe Heroku::Nav::Provider do
-  before do
-    Heroku::Nav::Provider.stubs(:fetch).returns('<!-- heroku header -->')
-  end
-
   describe "when there's no heroku-nav-data cookie" do
+    before do
+      Heroku::Nav::Provider.stubs(:fetch).returns('<!-- heroku header -->')
+    end
+
     def app
       make_app { use Heroku::Nav::Provider }
     end
@@ -137,6 +137,7 @@ describe Heroku::Nav::Provider do
 
   describe "when there's a heroku-nav-data cookie" do
     before do
+      Heroku::Nav::Provider.stubs(:fetch).returns('<!-- heroku header -->')
       set_cookie("heroku-nav-data=data")
     end
 
@@ -170,6 +171,16 @@ describe Heroku::Nav::Provider do
         get '/', :body => '<html><body>hi</body>'
         last_response.body.should.equal '<html><body><!-- \+ nav -->hi</body>'
       end
+    end
+  end
+
+  describe "when there's an error fetching nav" do
+    before do
+      RestClient.stubs(:get).raises(Timeout::Error)
+    end
+
+    it "should not raise" do
+      lambda { Heroku::Nav::Provider.fetch }.should.not.raise
     end
   end
 end
