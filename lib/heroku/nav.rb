@@ -1,5 +1,5 @@
-require 'rest_client'
-require 'json'
+require 'okjson'
+require 'net/https'
 require 'timeout'
 
 module Heroku
@@ -33,15 +33,20 @@ module Heroku
       end
 
       class << self
-        def fetch
-          Timeout.timeout(10) do
+        def fetch(format = 'application/json')
+          uri = URI.parse(resource_url)
+          http = Net::HTTP.new(uri.host, uri.port)
+          http.use_ssl = true if uri.scheme == 'https'
+          request = Net::HTTP::Get.new(uri.request_uri)
+          request['Accept'] = format
+          response = Timeout.timeout(10) do
             retry_upto(10, :interval => 0.5) do
-              raw = RestClient.get(resource_url, :accept => :json).to_s
-              return JSON.parse(raw)
+              http.request(request)
             end
           end
+          format == 'application/json' ? OkJson.decode(response.body) : response.body
         rescue Exception => e
-          STDERR.puts "Failed to fetch the Heroku #{resource}: #{e.class.name} - #{e.message}"
+          $stderr.puts "Failed to fetch the Heroku #{resource}: #{e.class.name} - #{e.message}"
           {}
         end
 
@@ -113,15 +118,9 @@ module Heroku
 
     class Provider < Base
       class << self
+
         def fetch
-          Timeout.timeout(10) do
-            retry_upto(10, :interval => 0.5) do
-              RestClient.get(resource_url).to_s
-            end
-          end
-        rescue => e
-          STDERR.puts "Failed to fetch the Heroku #{resource}: #{e.class.name} - #{e.message}"
-          {}
+          super('text/html')
         end
 
         def resource_url
