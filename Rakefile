@@ -1,3 +1,5 @@
+require 'bundler/setup'
+
 task :default => :spec
 
 desc 'Run specs (with story style output)'
