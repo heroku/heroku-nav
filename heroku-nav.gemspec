@@ -27,11 +27,10 @@ Gem::Specification.new do |s|
   ])
 
   s.specification_version = 3
-  s.add_development_dependency(%q<bacon>, [">= 0"])
-  s.add_development_dependency(%q<mocha>, [">= 0"])
-  s.add_development_dependency(%q<sinatra>, [">= 0"])
-  s.add_development_dependency(%q<rack-test>, [">= 0"])
-  s.add_development_dependency(%q<rake>, [">= 0"])
-  s.add_runtime_dependency(%q<rest-client>, [">= 1.0"])
-  s.add_runtime_dependency(%q<json>, [">= 0"])
+  s.add_development_dependency("rake", [">= 0"])
+  s.add_development_dependency("bacon", [">= 0"])
+  s.add_development_dependency("mocha", [">= 0"])
+  s.add_development_dependency("sinatra", [">= 0"])
+  s.add_development_dependency("rack-test", [">= 0"])
+  s.add_development_dependency("webmock", [">= 0"])
 end

@@ -1,13 +1,31 @@
 require File.expand_path('../base', __FILE__)
 
 describe Heroku::Nav::Header do
+
   def app
     make_app { use Heroku::Nav::Header }
   end
 
+  def wrap_stderr(&block)
+    original_stderr = $stderr
+    $stderr = StringIO.new
+    yield
+    str = $stderr.string
+    $stderr = original_stderr
+    str
+  end
+
+  url = "https://nav.heroku.com/header"
+
+  before do
+    WebMock.reset!
+  end
+
   it "rescues exceptions" do
-    RestClient.stubs(:get).raises(Timeout::Error)
-    get '/', :body => '<html><body>hi'
+    stub_request(:get, url).to_timeout
+    wrap_stderr do
+      get '/', :body => '<html><body>hi'
+    end
     last_response.status.should.equal 200
   end
 
