@@ -3,8 +3,6 @@ Gem::Specification.new do |s|
   s.version = "0.2.0"
   s.date = "2013-02-05"
 
-  s.rubygems_version = "1.3.6"
-  s.required_rubygems_version = "1.3.6"
   s.authors = ["David Dollar", "Pedro Belo", "Raul Murciano", "Todd Matthews", "Jonathan Dance"]
   s.email = ["david@heroku.com", "pedro@heroku.com", "raul@heroku.com", "todd@heroku.com", "jd@heroku.com"]
   s.homepage = "http://github.com/heroku/heroku-nav"
