@@ -1,9 +1,9 @@
 $: << File.dirname(__FILE__) + '/../lib'
 
-require 'rubygems'
 require 'heroku/nav'
 require 'sinatra/base'
-require 'baconmocha'
+require 'bacon'
+require 'mocha/api'
 require 'rack/test'
 
 class TestApp < Sinatra::Base
@@ -41,5 +41,6 @@ end
 
 # Make sure Rack::Test methods are available for all specs
 class Bacon::Context
-  include Rack::Test::Methods
+  include ::Rack::Test::Methods
+  include ::Mocha::API
 end

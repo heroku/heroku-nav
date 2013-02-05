@@ -34,7 +34,8 @@ Gem::Specification.new do |s|
   ]
 
   s.specification_version = 3
-  s.add_development_dependency(%q<baconmocha>, [">= 0"])
+  s.add_development_dependency(%q<bacon>, [">= 0"])
+  s.add_development_dependency(%q<mocha>, [">= 0"])
   s.add_development_dependency(%q<sinatra>, [">= 0"])
   s.add_development_dependency(%q<rack-test>, [">= 0"])
   s.add_development_dependency(%q<rake>, [">= 0"])

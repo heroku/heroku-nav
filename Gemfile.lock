@@ -9,9 +9,6 @@ GEM
   remote: http://rubygems.org/
   specs:
     bacon (1.2.0)
-    baconmocha (0.0.2)
-      bacon
-      mocha (>= 0.9.6)
     json (1.7.6)
     metaclass (0.0.1)
     mime-types (1.20.1)
@@ -35,8 +32,9 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  baconmocha
+  bacon
   heroku-nav!
+  mocha
   rack-test
   rake
   sinatra
