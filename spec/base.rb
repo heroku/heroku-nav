@@ -21,6 +21,10 @@ class TestApp < Sinatra::Base
     params[:body]
   end
 
+  get '/404' do
+    [404, "<html><body>404"]
+  end
+
   get '/alternate' do
     params[:body]
   end
