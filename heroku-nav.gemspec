@@ -1,12 +1,15 @@
 Gem::Specification.new do |s|
   s.name = %q{heroku-nav}
   s.version = "0.1.24"
+  s.date = "2011-10-10"
 
-  s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
-  s.authors = ["David Dollar", "Pedro Belo", "Raul Murciano", "Todd Matthews"]
-  s.date = %q{2011-10-10}
-  s.description = %q{}
-  s.email = ["david@heroku.com", "pedro@heroku.com", "raul@heroku.com", "todd@heroku.com"]
+  s.rubygems_version = "1.3.6"
+  s.required_rubygems_version = "1.3.6"
+  s.authors = ["David Dollar", "Pedro Belo", "Raul Murciano", "Todd Matthews", "Jonathan Dance"]
+  s.email = ["david@heroku.com", "pedro@heroku.com", "raul@heroku.com", "todd@heroku.com", "jd@heroku.com"]
+  s.homepage = "http://github.com/heroku/heroku-nav"
+  s.description = ""
+  s.summary = ""
   s.extra_rdoc_files = [
     "README.md"
   ]
@@ -17,14 +20,12 @@ Gem::Specification.new do |s|
     "Rakefile",
     "heroku-nav.gemspec",
     "lib/heroku/nav.rb",
+    "lib/okjson.rb",
     "spec/api_spec.rb",
     "spec/base.rb",
     "spec/nav_spec.rb",
   ]
-  s.homepage = %q{http://heroku.com}
   s.require_paths = ["lib"]
-  s.rubygems_version = %q{1.3.6}
-  s.summary = %q{}
   s.test_files = [
     "spec/api_spec.rb",
     "spec/base.rb",
