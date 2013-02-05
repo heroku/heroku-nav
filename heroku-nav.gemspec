@@ -13,26 +13,18 @@ Gem::Specification.new do |s|
   s.extra_rdoc_files = [
     "README.md"
   ]
-  s.files = [
+  s.files = Dir.glob("{lib,spec}/**/*").concat([
     "README.md",
     "Gemfile",
     "Gemfile.lock",
     "Rakefile",
-    "heroku-nav.gemspec",
-    "lib/heroku/nav.rb",
-    "lib/okjson.rb",
-    "spec/api_spec.rb",
-    "spec/base.rb",
-    "spec/nav_spec.rb",
-  ]
+  ])
   s.require_paths = ["lib"]
-  s.test_files = [
-    "spec/api_spec.rb",
-    "spec/base.rb",
-    "spec/nav_spec.rb",
+  s.test_files = Dir.glob("spec/**/*").concat([
     "Gemfile",
     "Gemfile.lock",
-  ]
+    "Rakefile",
+  ])
 
   s.specification_version = 3
   s.add_development_dependency(%q<bacon>, [">= 0"])
