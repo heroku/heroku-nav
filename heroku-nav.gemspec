@@ -12,12 +12,14 @@ Gem::Specification.new do |s|
   ]
   s.files = [
     "README.md",
+    "Gemfile",
+    "Gemfile.lock",
     "Rakefile",
     "heroku-nav.gemspec",
     "lib/heroku/nav.rb",
     "spec/api_spec.rb",
     "spec/base.rb",
-    "spec/nav_spec.rb"
+    "spec/nav_spec.rb",
   ]
   s.homepage = %q{http://heroku.com}
   s.require_paths = ["lib"]
@@ -26,32 +28,16 @@ Gem::Specification.new do |s|
   s.test_files = [
     "spec/api_spec.rb",
     "spec/base.rb",
-    "spec/nav_spec.rb"
+    "spec/nav_spec.rb",
+    "Gemfile",
+    "Gemfile.lock",
   ]
 
-  if s.respond_to? :specification_version then
-    current_version = Gem::Specification::CURRENT_SPECIFICATION_VERSION
-    s.specification_version = 3
-
-    if Gem::Version.new(Gem::RubyGemsVersion) >= Gem::Version.new('1.2.0') then
-      s.add_development_dependency(%q<baconmocha>, [">= 0"])
-      s.add_development_dependency(%q<sinatra>, [">= 0"])
-      s.add_development_dependency(%q<rack-test>, [">= 0"])
-      s.add_runtime_dependency(%q<rest-client>, [">= 1.0"])
-      s.add_runtime_dependency(%q<json>, [">= 0"])
-    else
-      s.add_dependency(%q<baconmocha>, [">= 0"])
-      s.add_dependency(%q<sinatra>, [">= 0"])
-      s.add_dependency(%q<rack-test>, [">= 0"])
-      s.add_dependency(%q<rest-client>, [">= 1.0"])
-      s.add_dependency(%q<json>, [">= 0"])
-    end
-  else
-    s.add_dependency(%q<baconmocha>, [">= 0"])
-    s.add_dependency(%q<sinatra>, [">= 0"])
-    s.add_dependency(%q<rack-test>, [">= 0"])
-    s.add_dependency(%q<rest-client>, [">= 1.0"])
-    s.add_dependency(%q<json>, [">= 0"])
-  end
+  s.specification_version = 3
+  s.add_development_dependency(%q<baconmocha>, [">= 0"])
+  s.add_development_dependency(%q<sinatra>, [">= 0"])
+  s.add_development_dependency(%q<rack-test>, [">= 0"])
+  s.add_development_dependency(%q<rake>, [">= 0"])
+  s.add_runtime_dependency(%q<rest-client>, [">= 1.0"])
+  s.add_runtime_dependency(%q<json>, [">= 0"])
 end
-
