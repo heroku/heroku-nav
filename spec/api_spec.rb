@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/base'
+require File.expand_path('../base', __FILE__)
 
 describe "Api" do
   before do
