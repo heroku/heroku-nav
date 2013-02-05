@@ -1,9 +1,10 @@
 Heroku Nav
 ==========
 
+[![Build Status](https://travis-ci.org/heroku/heroku-nav.png?branch=master)](https://travis-ci.org/heroku/heroku-nav)
+
 This is a Ruby gem providing a Rack middleware to help Heroku add-on providers
 displaying a customized header for users coming from a single sign-on session.
-
 
 ## Usage ######################################################################
 
@@ -31,9 +32,14 @@ To don't display the header on a given request path you can use the `:except` co
 
     config.middleware.use Heroku::Nav::Provider, :except => /admin/
 
-
 ## Meta #######################################################################
 
-Maintained by Pedro Belo, contributions by Todd Matthews and David Dollar.
+Written by Pedro Belo, with contributions from:
+
+* Todd Matthews
+* David Dollar
+* Caio Chassot
+* Raul Murciano
+* Jonathan Dance
 
 Released under the MIT license. http://github.com/heroku/heroku-nav
