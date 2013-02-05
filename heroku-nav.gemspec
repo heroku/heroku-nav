@@ -1,7 +1,7 @@
 Gem::Specification.new do |s|
   s.name = %q{heroku-nav}
-  s.version = "0.1.24"
-  s.date = "2011-10-10"
+  s.version = "0.2.0"
+  s.date = "2013-02-05"
 
   s.rubygems_version = "1.3.6"
   s.required_rubygems_version = "1.3.6"
