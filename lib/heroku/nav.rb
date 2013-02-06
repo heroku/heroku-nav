@@ -70,7 +70,7 @@ module Heroku
 
         def retry_upto(max_retries = 1, opts = {})
           yield
-        rescue *(opts[:rescue] || Exception)
+        rescue Timeout::Error, StandardError
           attempt = attempt ? attempt+1 : 1
           raise if (attempt == max_retries)
           if interval = opts[:interval]
