@@ -45,7 +45,7 @@ module Heroku
             end
           end
           format == 'application/json' ? OkJson.decode(response.body) : response.body
-        rescue Exception => e
+        rescue Timeout::Error, StandardError => e
           $stderr.puts "Failed to fetch the Heroku #{resource}: #{e.class.name} - #{e.message}"
           {}
         end

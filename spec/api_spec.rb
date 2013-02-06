@@ -19,12 +19,19 @@ describe "Api" do
     Heroku::Nav::Header.resource_url.should == url
   end
 
-  it "doesn't raise" do
+  it "doesn't raise a timeout error" do
     stub_request(:get, url).to_timeout
     stderr = wrap_stderr do
       Heroku::Nav::Header.fetch.should == {}
     end
     stderr.should == "Failed to fetch the Heroku header: Timeout::Error - execution expired\n"
+  end
+
+  it "raise signals/interrupts" do
+    stub_request(:get, url).to_raise(::Interrupt)
+    wrap_stderr do
+      lambda { Heroku::Nav::Header.fetch }.should.raise(::Interrupt)
+    end
   end
 
   it "parses the JSON response, returning the html and css" do
