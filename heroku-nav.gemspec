@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name = %q{heroku-nav}
-  s.version = "0.2.1"
+  s.version = "0.2.2"
   s.date = "2013-02-05"
 
   s.authors = ["David Dollar", "Pedro Belo", "Raul Murciano", "Todd Matthews", "Jonathan Dance"]
