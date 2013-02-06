@@ -39,8 +39,9 @@ module Heroku
           http.use_ssl = true if uri.scheme == 'https'
           request = Net::HTTP::Get.new(uri.request_uri)
           request['Accept'] = format
-          response = Timeout.timeout(10) do
-            retry_upto(10, :interval => 0.5) do
+          timeout = (ENV['HEROKU_NAV_TIMEOUT'] || 10).to_i
+          response = Timeout.timeout(timeout) do
+            retry_upto(timeout, :interval => 0.5) do
               http.request(request)
             end
           end

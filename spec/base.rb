@@ -1,5 +1,7 @@
 $: << File.dirname(__FILE__) + '/../lib'
 
+ENV['HEROKU_NAV_TIMEOUT'] = '1'
+
 require 'heroku/nav'
 require 'sinatra/base'
 require 'bacon'
